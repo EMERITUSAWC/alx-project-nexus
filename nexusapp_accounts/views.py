@@ -1,8 +1,10 @@
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from .models import Account
 
-def index(request):
-    """
-    Basic view for the Accounts app.
-    Returns a simple response to confirm the app is working.
-    """
-    return HttpResponse("✅ Accounts app is working!")
+def account_list(request):
+    accounts = Account.objects.all()
+    return render(request, 'accounts/account_list.html', {'accounts': accounts})
+
+def account_detail(request, pk):
+    account = get_object_or_404(Account, pk=pk)
+    return render(request, 'accounts/account_detail.html', {'account': account})

@@ -1,75 +1,47 @@
-# Ì≥ö Project Nexus Documentation  
+# Project Nexus
 
-**Repository:** `alx-project-nexus`  
-**Program:** ProDev Backend Engineering  
-
-## Ì≥ñ Overview  
-Project Nexus is a comprehensive documentation hub capturing major learnings, challenges, and best practices from the **ProDev Backend Engineering Program**. This repository serves as a reference guide for both **current** and **future learners**, showcasing core backend technologies, tools, and insights. It also fosters collaboration between **frontend** and **backend learners**, bridging the gap between development teams.  
+**Author:** Clement Wewotah  
+**ALX Backend Engineering Project**  
 
 ---
 
-## ÌæØ Project Objectives  
-- Consolidate key learnings from the **ProDev Backend Engineering Program**.  
-- Document major backend technologies, concepts, challenges, and solutions.  
-- Serve as a reliable reference for learners and future developers.  
-- Encourage collaboration between **frontend** and **backend** learners.  
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Features](#features)
+3. [Project Structure](#project-structure)
+4. [Requirements](#requirements)
+5. [Setup Instructions](#setup-instructions)
+6. [Database Migrations](#database-migrations)
+7. [Running the Project](#running-the-project)
+8. [API Documentation](#api-documentation)
+9. [Admin Interface](#admin-interface)
+10. [Notes](#notes)
 
 ---
 
-## Ìª† Key Technologies Covered  
-- **Python** ‚Äì Core programming language for backend development.  
-- **Django** ‚Äì Powerful Python web framework for building scalable applications.  
-- **REST APIs** ‚Äì Designing and consuming RESTful services.  
-- **GraphQL** ‚Äì Flexible API query language for efficient data fetching.  
-- **Docker** ‚Äì Containerization for consistent environments.  
-- **CI/CD Pipelines** ‚Äì Automating deployment and integration processes.  
+## Project Overview
+
+Project Nexus is a backend system built with **Django 5** and **Django REST Framework (DRF)**.  
+It manages **Accounts**, **Products**, and **Orders**, providing a clean REST API with JWT authentication and admin management.  
+
+The project satisfies the **ALX Backend Engineering** requirements for project submission and deployment readiness.
 
 ---
 
-## Ì∑† Important Backend Development Concepts  
-- **Database Design & Optimization** ‚Äì Efficient schema design, indexing, and normalization.  
-- **Asynchronous Programming** ‚Äì Leveraging `asyncio`, Celery, and RabbitMQ for non-blocking tasks.  
-- **Caching Strategies** ‚Äì Using Redis and Django caching to improve performance.  
-- **System Design Principles** ‚Äì Scalable architectures, load balancing, and fault tolerance.  
+## Features
+
+- User authentication and management.
+- CRUD operations for:
+  - Accounts
+  - Products
+  - Orders
+- JWT-based authentication for API endpoints.
+- Celery integration for asynchronous tasks (if required for ALX milestones).
+- Admin interface to manage models.
+- drf-spectacular integration for auto-generated API documentation.
 
 ---
 
-## Ì∑© Challenges Faced & Solutions Implemented  
-| **Challenge**                          | **Solution**                                                                 |
-|----------------------------------------|-------------------------------------------------------------------------------|
-| Managing heavy workloads in background  | Implemented **Celery** with **RabbitMQ** for distributed task processing.     |
-| Ensuring seamless deployments           | Integrated **GitHub Actions** for CI/CD pipelines with Docker containers.      |
-| Optimizing slow database queries        | Added **indexes** and **caching** with Redis to improve query performance.    |
-| Maintaining API versioning              | Adopted **RESTful versioning** strategies and GraphQL schema evolution.       |
+## Project Structure
 
----
-
-## Ìºü Best Practices & Personal Takeaways  
-- Write **clean, modular, and well-documented code** for long-term maintainability.  
-- Use **version control (Git/GitHub)** effectively‚Äîcommit frequently with meaningful messages.  
-- Prioritize **testing** (unit, integration, and end-to-end) to ensure reliability.  
-- Employ **environment parity** with Docker to reduce ‚Äúworks on my machine‚Äù issues.  
-- Collaborate actively with **frontend peers** to align API contracts and requirements.  
-- Embrace **continuous learning**‚Äîbackend technologies evolve rapidly.  
-
----
-
-## Ì¥ù Collaboration Hub  
-- **Collaborate with:**  
-  - Fellow **Backend Learners** ‚Äì Share insights, review code, and solve problems together.  
-  - **Frontend Learners** ‚Äì Provide robust endpoints and gather feedback for integration.  
-
-- **Where to Collaborate:**  
-  - Ì≤¨ **Discord Channel:** `#ProDevProjectNexus` ‚Äì Share ideas, ask/answer questions, and stay updated.  
-
-Ì≤° **ProDev Tip:**  
-- Use the first week to announce your project choice.  
-- Find frontend collaborators working on the same project for seamless teamwork.  
-
----
-
-## Ì∫Ä How to Use This Repository  
-1. Clone the repository:  
-   ```bash
-   git clone https://github.com/<your-username>/alx-project-nexus.git
 

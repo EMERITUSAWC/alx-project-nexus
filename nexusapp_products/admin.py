@@ -3,6 +3,6 @@ from .models import Product
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price', 'created_at')
+    list_display = ('name', 'description', 'price', 'created_at')
+    ordering = ('created_at',)
     search_fields = ('name',)
-    ordering = ('-created_at',)

@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import index
+from . import views
 
 urlpatterns = [
-    path('', index, name='orders_index'),
+    path('', views.order_list, name='order_list'),
+    path('<int:pk>/', views.order_detail, name='order_detail'),
 ]

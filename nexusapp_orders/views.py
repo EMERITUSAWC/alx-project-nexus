@@ -1,8 +1,10 @@
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from .models import Order
 
-def index(request):
-    """
-    Basic view for the Orders app.
-    Returns a simple response to confirm the app is working.
-    """
-    return HttpResponse("✅ Orders app is working!")
+def order_list(request):
+    orders = Order.objects.all()
+    return render(request, 'orders/order_list.html', {'orders': orders})
+
+def order_detail(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    return render(request, 'orders/order_detail.html', {'order': order})
