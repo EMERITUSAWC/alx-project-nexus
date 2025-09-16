@@ -1,6 +1,30 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
-{% block content %}
-  <h2>Welcome to Nexus!</h2>
-  <p>This is your ALX project starter page.</p>
-{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nexus Project</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <header>
+    <h1>Welcome to Nexus!</h1>
+  </header>
+
+  <main>
+    <p>This is the homepage of your Nexus project. Use the navigation links to explore features.</p>
+    <nav>
+      <ul>
+        <li><a href="{% url 'accounts_list' %}">View Accounts</a></li>
+        <li><a href="{% url 'products_list' %}">View Products</a></li>
+        <li><a href="{% url 'orders_list' %}">View Orders</a></li>
+      </ul>
+    </nav>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Nexus Project</p>
+  </footer>
+</body>
+</html>

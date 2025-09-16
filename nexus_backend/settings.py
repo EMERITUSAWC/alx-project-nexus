@@ -1,8 +1,3 @@
-"""
-Django settings for nexus_backend project.
-ALX Project Nexus – Comprehensive configuration for development and production.
-"""
-
 import os
 from pathlib import Path
 from datetime import timedelta
@@ -27,11 +22,14 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 # Add your deployed domain(s) or server IP here for production.
 # nexus_backend/settings.py
 
+
 ALLOWED_HOSTS = [
-    "127.0.0.1",    # Localhost IP
-    "localhost",    # Localhost hostname
-    "your-app.onrender.com",  # Your Render or production URL (replace with real URL)
+    "127.0.0.1",
+    "localhost",
+    "192.168.x.x",      # (Replace with your local IP if testing on another device)
+    "your-app.onrender.com"  # Replace with your actual Render URL
 ]
+
 
 # ------------------------------------------------------------------------------
 # APPLICATION DEFINITION
