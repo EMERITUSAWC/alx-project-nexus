@@ -1,1 +1,1 @@
-web: gunicorn nexus_backend.wsgi
+web: gunicorn nexus_backend.wsgi:application
