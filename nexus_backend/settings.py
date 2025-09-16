@@ -25,10 +25,13 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 
 # Add your deployed domain(s) or server IP here for production.
-ALLOWED_HOSTS = os.environ.get(
-    "DJANGO_ALLOWED_HOSTS",
-    "127.0.0.1,localhost"
-).split(",")
+# nexus_backend/settings.py
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",    # Localhost IP
+    "localhost",    # Localhost hostname
+    "your-app.onrender.com",  # Your Render or production URL (replace with real URL)
+]
 
 # ------------------------------------------------------------------------------
 # APPLICATION DEFINITION
