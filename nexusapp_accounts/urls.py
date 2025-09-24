@@ -1,7 +1,11 @@
+# nexusapp_accounts/urls.py
 from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.account_list, name='account_list'),
-    path('<int:pk>/', views.account_detail, name='account_detail'),
+    # Home page
+    path('', views.home, name='home'),
+
+    # Accounts list view
+    path('accounts/', views.accounts_list, name='accounts_list'),
 ]

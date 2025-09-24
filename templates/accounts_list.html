@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Accounts List</title>
+</head>
+<body>
+  <h1>Accounts</h1>
+  <ul>
+    {% for account in accounts %}
+      <li>{{ account.name }}</li>
+    {% empty %}
+      <li>No accounts found.</li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>

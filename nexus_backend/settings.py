@@ -1,41 +1,43 @@
+"""
+Django settings for nexus_backend.
+Production-ready configuration with environment variables, security,
+and static file optimization for Render or similar platforms.
+"""
+
 import os
 from pathlib import Path
 from datetime import timedelta
 
-# ------------------------------------------------------------------------------
-# BASE DIRECTORY
-# ------------------------------------------------------------------------------
+# ------------------------
+# Base Directory & Env
+# ------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ------------------------------------------------------------------------------
-# SECURITY SETTINGS
-# ------------------------------------------------------------------------------
-# ⚠️ Replace with your own unique secret key for production.
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    "replace-this-with-a-secure-random-string-for-production"
-)
+# Environment Helper
+def get_env(key, default=None):
+    """Fetch environment variables with optional default."""
+    return os.getenv(key, default)
 
-# Debug should be False in production!
-DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
+# ------------------------
+# Security
+# ------------------------
+SECRET_KEY = get_env('DJANGO_SECRET_KEY', 'insecure-dev-key')
+DEBUG = get_env('DJANGO_DEBUG', 'True').lower() == 'true'
+ALLOWED_HOSTS = get_env('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-# Add your deployed domain(s) or server IP here for production.
-# nexus_backend/settings.py
+# Production security settings
+if not DEBUG:
+    SECURE_HSTS_SECONDS = 31536000  # Enforce HTTPS for 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
-
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    "192.168.x.x",      # (Replace with your local IP if testing on another device)
-    "your-app.onrender.com"  # Replace with your actual Render URL
-]
-
-
-# ------------------------------------------------------------------------------
-# APPLICATION DEFINITION
-# ------------------------------------------------------------------------------
+# ------------------------
+# Applications
+# ------------------------
 INSTALLED_APPS = [
-    # Django default apps
+    # Django core
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,22 +45,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third-party apps
-    'rest_framework',           # Django REST Framework for APIs
-    'corsheaders',              # Handle cross-origin requests
+    # Third-party
+    'rest_framework',
+    'corsheaders',
 
-    # Local apps (replace with your actual app names)
+    # Local apps
     'nexusapp_accounts',
     'nexusapp_products',
     'nexusapp_orders',
 ]
 
+# ------------------------
+# Middleware
+# ------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',          # Enable CORS
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -66,10 +72,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'nexus_backend.urls'
 
+# ------------------------
+# Templates
+# ------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # Add your global templates folder if needed
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -85,104 +93,82 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nexus_backend.wsgi.application'
 
-# ------------------------------------------------------------------------------
-# DATABASE CONFIGURATION
-# ------------------------------------------------------------------------------
-# 💡 Use SQLite for development. Switch to PostgreSQL for production.
+# ------------------------
+# Database
+# ------------------------
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get("DB_ENGINE", 'django.db.backends.sqlite3'),
-        'NAME': os.environ.get("DB_NAME", BASE_DIR / 'db.sqlite3'),
-        'USER': os.environ.get("DB_USER", ''),
-        'PASSWORD': os.environ.get("DB_PASSWORD", ''),
-        'HOST': os.environ.get("DB_HOST", ''),
-        'PORT': os.environ.get("DB_PORT", ''),
+        'ENGINE': get_env('DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': get_env('DB_NAME', BASE_DIR / 'db.sqlite3'),
+        'USER': get_env('DB_USER', ''),
+        'PASSWORD': get_env('DB_PASSWORD', ''),
+        'HOST': get_env('DB_HOST', ''),
+        'PORT': get_env('DB_PORT', ''),
     }
 }
 
-# ------------------------------------------------------------------------------
-# PASSWORD VALIDATION
-# ------------------------------------------------------------------------------
+# ------------------------
+# Authentication
+# ------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', 'OPTIONS': {'min_length': 9}},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# ------------------------------------------------------------------------------
-# INTERNATIONALIZATION
-# ------------------------------------------------------------------------------
+# ------------------------
+# Internationalization
+# ------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# ------------------------------------------------------------------------------
-# STATIC & MEDIA FILES
-# ------------------------------------------------------------------------------
+# ------------------------
+# Static & Media Files
+# ------------------------
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']   # Local static folder
-STATIC_ROOT = BASE_DIR / 'staticfiles'     # Collected static for production
-
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ------------------------------------------------------------------------------
-# DEFAULT PRIMARY KEY FIELD TYPE
-# ------------------------------------------------------------------------------
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# ------------------------------------------------------------------------------
-# DJANGO REST FRAMEWORK SETTINGS
-# ------------------------------------------------------------------------------
+# ------------------------
+# REST Framework
+# ------------------------
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
 }
 
-# ------------------------------------------------------------------------------
-# CORS HEADERS SETTINGS
-# ------------------------------------------------------------------------------
-# Allow all origins for dev. Restrict this in production.
-CORS_ALLOW_ALL_ORIGINS = True
+# ------------------------
+# CORS Settings
+# ------------------------
+CORS_ALLOWED_ORIGINS = get_env('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Easier for local dev
 
-# ------------------------------------------------------------------------------
-# SECURITY HEADERS (Recommended for Production)
-# ------------------------------------------------------------------------------
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-
-# ------------------------------------------------------------------------------
-# LOGGING (Optional but recommended)
-# ------------------------------------------------------------------------------
+# ------------------------
+# Logging
+# ------------------------
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
         'console': {'class': 'logging.StreamHandler'},
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
+    'root': {'handlers': ['console'], 'level': 'INFO'},
 }
 
-# ------------------------------------------------------------------------------
-# OPTIONAL: SIMPLE JWT CONFIG (If you add JWT auth later)
-# ------------------------------------------------------------------------------
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
+# ------------------------
+# Default Auto Field
+# ------------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
