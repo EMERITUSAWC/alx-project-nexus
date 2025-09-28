@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import home
 
 urlpatterns = [
-    # Example: path('', views.index, name='index'),
+    path('', home, name='home'),  # Root URL points to home page
 ]
