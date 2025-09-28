@@ -29,7 +29,13 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 # ALLOWED HOSTS
 # -------------------------
 # Set this in Render environment, e.g., ALLOWED_HOSTS=yourapp.onrender.com
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = [
+    # Allowed hosts for Render deployment
+    "abagna-alx-nexus-project-lw0z.onrender.com",  # Your Render URL
+    "localhost",  # For local testing
+    "127.0.0.1",  # For local testing
+
+]
 
 # -------------------------
 # INSTALLED APPS
