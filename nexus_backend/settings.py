@@ -6,8 +6,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
 SECRET_KEY = 'your-secret-key'
-DEBUG = True
-ALLOWED_HOSTS = ['*']  # For Render deployment; later replace '*' with your domain
+DEBUG = False  # Set True for local dev, False in production
+ALLOWED_HOSTS = ['abagna-alx-nexus-project-lw0z.onrender.com']
+
 
 # Installed apps
 INSTALLED_APPS = [
